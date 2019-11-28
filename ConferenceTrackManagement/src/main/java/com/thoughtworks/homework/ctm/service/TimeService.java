@@ -7,14 +7,17 @@ import com.thoughtworks.homework.ctm.entity.Track;
 import com.thoughtworks.homework.ctm.enums.ExceptionEnum;
 import com.thoughtworks.homework.ctm.enums.SessionTypeEnum;
 import com.thoughtworks.homework.ctm.exception.CommonException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
-
 public class TimeService {
     public static final int INIT_ROUND=3;
     public static final int BASE_MORNING_TALK_CNT=2;
     public static final int MIN_lONG_NUM=10;
+    private static final Logger LOGGER = LoggerFactory.getLogger(TimeService.class);
+
     public static List<Track>  groupTalks(List<Talk> talkList,Integer trackCnt) throws CommonException {
         List<Track> result=new ArrayList<Track>();
        int talkSize=talkList.size();
@@ -43,6 +46,7 @@ public class TimeService {
         }
         //talk不够排，抛异常
         if(talkList.size()<trackCnt*INIT_ROUND){
+            LOGGER.error(ExceptionEnum.MATCHFAILEDEXCEPTION.getErrorMessage());
             throw new CommonException(ExceptionEnum.MATCHFAILEDEXCEPTION.getErrorMessage(),ExceptionEnum.MATCHFAILEDEXCEPTION.getErroeCode());
         }
         //至此一共使用了2倍track数的talk
